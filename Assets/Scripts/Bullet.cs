@@ -2,7 +2,7 @@
 {
     public override Projectile ApplyModifiers(WeaponModifiers weaponModifiers)
     {
-        this.Damage *= weaponModifiers.Damage;
+        this.Damage += weaponModifiers.Damage;
 
         return this;
     }

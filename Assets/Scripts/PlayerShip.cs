@@ -3,7 +3,7 @@ using System.Linq;
 using Items;
 using UnityEngine;
 
-public class PlayerShip : MonoBehaviour
+public sealed class PlayerShip : MonoBehaviour
 {
     public ShipProperties ShipProperties;
     public WeaponModifiers WeaponModifiers;
@@ -43,8 +43,33 @@ public class PlayerShip : MonoBehaviour
                 this.Items.Last().Activate(this.WeaponModifiers, this.ShipProperties);
                 Destroy(other.gameObject);
                 break;
+            case "Enemy":
+                var enemy = other.gameObject.GetComponent<Enemy>();
+                enemy.DealDamage(enemy.CollisionDamage);
+                this.DealDamage(enemy.CollisionDamage);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void DealDamage(int damage)
+    {
+        for (var i = 0; i < damage; i++)
+        {
+            if (this.ShipProperties.CurrentShield > 0)
+            {
+                this.ShipProperties.CurrentShield--;
+            }
+            else
+            {
+                this.ShipProperties.Armor--;
+            }
+
+            if (this.ShipProperties.Armor >= 1) continue;
+
+            Destroy(this);
+            break;
         }
     }
 }

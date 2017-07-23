@@ -3,7 +3,7 @@
 [Serializable]
 public class WeaponModifiers
 {
-    public float Damage;
+    public int Damage;
     public float Size;
     public float Speed;
     public float Multiplier;
