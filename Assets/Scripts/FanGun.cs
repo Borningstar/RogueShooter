@@ -4,34 +4,50 @@ public sealed class FanGun : Weapon
 {
     public override void TriggerEffect(WeaponModifiers weaponModifiers)
     {
-        var shots = weaponModifiers.Multiplier;
-        var isEven = shots % 2 < 1;
+        var shots = Mathf.FloorToInt(weaponModifiers.Multiplier);
 
-        var halfShots = (shots - (isEven ? 0 : 1)) / 2f;
-        
-        var angle = 90 / (halfShots * 2);
-
-        var transformRotation = this.transform.rotation;
-        if (!isEven)
+        if (shots >= 1)
         {
-            Instantiate(this.Projectile, this.transform.position, transformRotation);
-        }
-
-        if (shots > 1)
-        {
-            Shoot(transformRotation, halfShots, angle, weaponModifiers);
+            Shoot(shots, weaponModifiers);
         }
     }
 
-    private void Shoot(Quaternion transformRot, float shots, float angle, WeaponModifiers weaponModifiers)
+    private void Shoot(int shots, WeaponModifiers weaponModifiers)
+    {
+        var isEven = shots % 2 < 1;
+
+        if (!isEven)
+        {
+            Instantiate(this.Projectile, this.transform.position, this.transform.rotation);
+        }
+
+        if (shots == 1)
+        {
+            return;
+        }
+
+        var halfShots = (shots - (isEven ? 0 : 1)) / 2f;
+
+        var angle = 90 / (halfShots * 2);
+
+        var rotation = this.transform.rotation;
+
+        this.ShootFanShots(shots, angle, weaponModifiers, rotation);
+    }
+
+    private void ShootFanShots(
+        int shots,
+        float angle,
+        WeaponModifiers weaponModifiers,
+        Quaternion rotation)
     {
         for (var i = 0; i < shots; i++)
         {
-            transformRot.eulerAngles = new Vector3(0, angle);
-            Instantiate(this.Projectile.ApplyModifiers(weaponModifiers), this.transform.position, transformRot);
+            rotation.eulerAngles = new Vector3(0, angle);
+            Instantiate(this.Projectile.ApplyModifiers(weaponModifiers), this.transform.position, rotation);
 
-            transformRot.eulerAngles = new Vector3(0, -angle);
-            Instantiate(this.Projectile, this.transform.position, transformRot);
+            rotation.eulerAngles = new Vector3(0, -angle);
+            Instantiate(this.Projectile, this.transform.position, rotation);
 
             angle += angle;
         }
