@@ -1,5 +1,6 @@
 ﻿namespace Enemy.Projectiles
 {
+    using Managers;
     using UnityEngine;
 
     public sealed class StartLinearMoveToPlayer : MonoBehaviour

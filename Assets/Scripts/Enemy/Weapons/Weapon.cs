@@ -1,5 +1,6 @@
 ﻿namespace Enemy.Weapons
 {
+    using Managers;
     using UnityEngine;
     using Projectiles;
 
@@ -10,12 +11,15 @@
 
         private void Start()
         {
-            InvokeRepeating("Shoot", this.ShootRate, this.ShootRate);
+            this.InvokeRepeating("Shoot", this.ShootRate, this.ShootRate);
         }
 
         public virtual void Shoot()
         {
-            Instantiate(this.Projectile, this.transform.position, Quaternion.identity);
+            if (this.transform.position.z > WaveManager.Instance.Bottom)
+            {
+                Instantiate(this.Projectile, this.transform.position, Quaternion.identity);
+            }
         }
     }
 }
