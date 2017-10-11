@@ -18,7 +18,7 @@
         {
             if (this.transform.position.z > WaveManager.Instance.Bottom)
             {
-                Instantiate(this.Projectile, this.transform.position, Quaternion.identity);
+                Instantiate(this.Projectile, this.transform.position, this.transform.rotation);
             }
         }
     }

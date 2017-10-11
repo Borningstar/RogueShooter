@@ -8,7 +8,7 @@
     [Serializable]
     public class Wave : MonoBehaviour
     {
-        public Enemy[] Enemies;
+        public Enemy Enemy;
         public int SubWaves;
         public float SubWaveInterval;
         public int NumSubWaves;
@@ -19,11 +19,11 @@
             this.StartCoroutine("TriggerPattern");
         }
 
-        IEnumerator TriggerPattern()
+        private IEnumerator TriggerPattern()
         {
             for (var i = 0; i < this.NumSubWaves; i++)
             {
-                this.Pattern.InitiatePattern(this.Enemies[0]);
+                this.Pattern.InitiatePattern(this.Enemy);
 
                 yield return new WaitForSeconds(this.SubWaveInterval);
             }
